@@ -4,6 +4,5 @@ pydantic
 python-multipart
 av
 onnx
-# onnxruntime-gpu
-onnxruntime
+onnxruntime-gpu
 torchvision

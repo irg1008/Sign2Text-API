@@ -20,4 +20,6 @@ or
 
 ## Where is it hosted?
 
-This server is hosted on <https://render.com> and is available at the following link: <https://api.sign2text.com/docs>
+This server is hosted on Azure and is available at the following link: <https://api.sign2text.com/docs>
+
+- [ ] Probar con railway
