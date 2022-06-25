@@ -1,3 +1,4 @@
+from email.policy import default
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from utils.video import process_video, get_frames, create_tmp_path
 from utils.onnx import get_session, oxx_inference
@@ -37,7 +38,7 @@ class TargetModel(BaseModel):
     description="Video classification",
     response_model=TargetModel,
 )
-async def inference(video: UploadFile = File()) -> TargetModel:
+async def inference(video: UploadFile = File(default=None)) -> TargetModel:
     """Video classification.
 
     Args:

@@ -8,18 +8,26 @@ The client will send a video and the server will process it and send the target 
 
 ## Run the backend server
 
-`uvicorn main:app --reload`
+> For development
 
-or
+`uvicorn main:app --reload --port 8000` or `python dev.py`
 
-`python run.py`
+> For production
+
+`uvicorn main:app --port 8000` or `python run.py`
 
 ## Tools used for testing
 
 [Insomnia](https://insomnia.rest/download)
 
+## Run locally on docker
+
+1. Build the image with `docker build -t sign2text:latest .`
+
+2. Run it with `docker run -p 8000:8000 sign2text:latest`
+
+3. Open the browser and go to `http://localhost:8000`
+
 ## Where is it hosted?
 
-This server is hosted on Azure and is available at the following link: <https://api.sign2text.com/docs>
-
-- [ ] Probar con railway
+This FastAPI container is hosted on Azure and is available at the following link: <https://api.sign2text.com/docs>

@@ -5,7 +5,7 @@ from torch import Tensor
 
 CLASSES = ["all", "before", "book", "drink", "help", "no", "walk", "yes"]
 MODEL_PATH = path.abspath(
-    path.join(path.dirname(__file__), "../models/WLASL_8_quantized.onnx")
+    path.join(path.dirname(__file__), "../../models/WLASL_8_quantized.onnx")
 )
 
 ONNX_PROVIDERS = ["CUDAExecutionProvider", "CPUExecutionProvider"]
