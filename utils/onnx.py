@@ -8,8 +8,7 @@ MODEL_PATH = path.abspath(
     path.join(path.dirname(__file__), "../models/WLASL_8_quantized.onnx")
 )
 
-# ONNX_PROVIDERS = ["CUDAExecutionProvider", "CPUExecutionProvider"]
-ONNX_PROVIDERS = ["CPUExecutionProvider"]
+ONNX_PROVIDERS = ["CUDAExecutionProvider", "CPUExecutionProvider"]
 
 
 def get_model() -> ModelProto:
