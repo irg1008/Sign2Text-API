@@ -18,8 +18,8 @@ The client will send a video and the server will process it and send the target 
 
 ## Run locally on docker
 
-1. Build the image with `docker build -t sign2text:latest .`
-2. Run it with `docker run -p 8000:8000 sign2text:latest`
+1. Build the image with `docker build -t sign2text .`
+2. Run it with `docker run -p 8000:8000 sign2text`
 3. Open the browser and go to `http://localhost:8000`
 
 ## Upload the container to azure
@@ -32,7 +32,7 @@ The client will send a video and the server will process it and send the target 
 
 `docker pull sign2textapi.azurecr.io/sign2text`
 
-## Upload the cotainer to AWS
+## Upload the container to AWS
 
 1. Instalamos el CLI de AWS: `pip install awscli`
 2. Configuramos el CLI: `aws configure`
@@ -45,8 +45,7 @@ The client will send a video and the server will process it and send the target 
 9. (Opcional) Si queremos eliminar la imagen del registro: `aws ecr batch-delete-image --repository-name sign2text --image-ids imageTag=latest`
 10. (Opcional) Si queremos eliminar el repositorio: `aws ecr delete-repository --repository-name sign2text`
 
-### Create an app for the image and assigna custom domain
-
+### Create an app for the image and assign custom domain
 
 ## Where is it hosted?
 
