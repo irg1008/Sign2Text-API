@@ -8,6 +8,8 @@ The client will send a video and the server will process it and send the target 
 
 ## Run the backend server
 
+---
+
 > For development
 
 `uvicorn main:app --reload --port 8000` or `python dev.py`
@@ -18,11 +20,15 @@ The client will send a video and the server will process it and send the target 
 
 ## Run locally on docker
 
+---
+
 1. Build the image with `docker build -t sign2text .`
 2. Run it with `docker run -p 8000:8000 sign2text`
 3. Open the browser and go to `http://localhost:8000`
 
 ## Upload the container to azure
+
+---
 
 1. Log in: `docker login sign2textapi.azurecr.io` Ver claves en Sign2TextAPI > Azure Container Registry > Claves de Acceso
 2. Add the label to the registry: `docker tag sign2text:latest sign2textapi.azurecr.io/latest`
@@ -30,9 +36,13 @@ The client will send a video and the server will process it and send the target 
 
 ### We can now pull the image if needed with
 
+---
+
 `docker pull sign2textapi.azurecr.io/sign2text`
 
 ## Upload the container to AWS
+
+---
 
 1. Instalamos el CLI de AWS: `pip install awscli`
 2. Configuramos el CLI: `aws configure`
@@ -45,7 +55,9 @@ The client will send a video and the server will process it and send the target 
 9. (Opcional) Si queremos eliminar la imagen del registro: `aws ecr batch-delete-image --repository-name sign2text --image-ids imageTag=latest`
 10. (Opcional) Si queremos eliminar el repositorio: `aws ecr delete-repository --repository-name sign2text`
 
-## Upload to AWS using EC2
+### Create App with EC2
+
+---
 
 1. Create a EC2 service in the platform.
 2. Connect to it with ssh using the pair keys given with: `ssh -i "credentials.pem" ec2-user@<INSTANCE>.<REGION>.compute.amazonaws.com`
@@ -69,18 +81,52 @@ The client will send a video and the server will process it and send the target 
     2. Agregamos una regla con tipo "Todo el tráfico" y 0.0.0.0/0
     3. La aplicación ya es accesible públicamente.
 
+### Create app Elastic Beanstalk
+
+---
+
+1. Crea una aplicación de EB desde el dashboard de AWS.
+2. Elige la opción de Docker + subir código.
+3. Sube un archivo Docker.aws.json
+   1. Por ejemplo:
+
+```json
+{
+   "AWSEBDockerrunVersion": "1",
+   "Image": {
+      "Name": "<IMAGE_URI>",
+      "Update": "true"
+   },
+   "Ports": [
+      {
+         "ContainerPort": "8000"
+      }
+   ]
+}
+```
+
+4. La imagen puede ser de ECR, Dockerhub o cualqueir otro lado.
+5. Espera que la aplicación se despligue y accede al link proporcionado.
+
 ## Añadir un dominio personalizado a nuestra aplicación
 
-### Create an app for the image and assign custom domain
+---
 
 ## Where is it hosted?
 
-This FastAPI image is hosted on AWS and is available at the following link: <https://api.sign2text.com/docs>
+---
+
+This FastAPI image is hosted on AWS with EB (not EC2) and is available at the following link: <https://api.sign2text.com/docs>
 
 ## Tools used for testing
+
+---
 
 [Insomnia](https://insomnia.rest/download)
 
 ## Bibliografía
 
+---
+
 [Tutorial de subir FastAPi a AWS](https://levelup.gitconnected.com/deploy-a-dockerized-fastapi-application-to-aws-cc757830ba1b)
+[Tutorial docker ECS](https://blog.clairvoyantsoft.com/deploy-and-run-docker-images-on-aws-ecs-85a17a073281)

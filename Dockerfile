@@ -10,4 +10,5 @@ COPY ./models ./models
 
 RUN pip install -r requirements.txt
 
-CMD ["python", "src/run.py"]
+WORKDIR /app/src
+CMD ["uvicorn", "main:app", "--port", "8000", "--host", "0.0.0.0"]

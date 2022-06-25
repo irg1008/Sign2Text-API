@@ -24,6 +24,11 @@ app.add_middleware(
 )
 
 
+## Close sseion on server close.
+@app.on_event("shutdown")
+async def shutdown():
+    del onnx_session
+
 class TargetModel(BaseModel):
     """
     OpenAPI Model for target response.
