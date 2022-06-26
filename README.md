@@ -61,9 +61,9 @@ The client will send a video and the server will process it and send the target 
 
 1. Create a EC2 service in the platform.
 2. Connect to it with ssh using the pair keys given with: `ssh -i "credentials.pem" ec2-user@<INSTANCE>.<REGION>.compute.amazonaws.com`
-3. When connected, tun the following commands:
+3. When connected, run the following commands:
    1. Update the pacackage list: `sudo yum update -y`
-   2. Install docker: `amazon-linux-extras install docker`
+   2. Install docker: `sudo amazon-linux-extras install docker`
    3. Start the docker with `sudo service docker start`
    4. Add the ec2-user to the docker group so you can execute Docker #commands without using sudo. `sudo usermod -a -G docker ec2-user`
 4. Reinicaimos la instancia de EC2 desde la plataforma y nos conectamos de nuevo.
@@ -77,8 +77,8 @@ The client will send a video and the server will process it and send the target 
     2. Importante usar `80:8000` para mapear los puertos de la instancia a los puertos de la imagen.
     3. Comprobar que la imagen está corriendo con `docker ps`
 11. Añadimos regla de entrada para aceptar tráfico.
-    1. En l ainstancia > Seguridad > Grupos de Seguridad > Editar reglas de entrada
-    2. Agregamos una regla con tipo "Todo el tráfico" y 0.0.0.0/0
+    1. En la instancia > Seguridad > Grupos de Seguridad > Editar reglas de entrada
+    2. Agregamos una regla con tipo "Todo el tráfico" y 0.0.0.0/0 o arreglamos regla de Https y Http Para 0.0.0.0 y ::0.
     3. La aplicación ya es accesible públicamente.
 
 ### Create app Elastic Beanstalk
@@ -90,33 +90,61 @@ The client will send a video and the server will process it and send the target 
 3. Sube un archivo Docker.aws.json
    1. Por ejemplo:
 
-```json
-{
-   "AWSEBDockerrunVersion": "1",
-   "Image": {
-      "Name": "<IMAGE_URI>",
-      "Update": "true"
-   },
-   "Ports": [
-      {
-         "ContainerPort": "8000"
-      }
-   ]
-}
-```
+   ```json
+   {
+      "AWSEBDockerrunVersion": "1",
+      "Image": {
+         "Name": "<IMAGE_URI>",
+         "Update": "true"
+      },
+      "Ports": [
+         {
+            "ContainerPort": "8000"
+         }
+      ]
+   }
+   ```
 
 4. La imagen puede ser de ECR, Dockerhub o cualqueir otro lado.
 5. Espera que la aplicación se despligue y accede al link proporcionado.
 
-## Añadir un dominio personalizado a nuestra aplicación
+## Añadiendo el dominio con Elastic Search
 
 ---
 
-## Where is it hosted?
+1. Vamos a "asignar dirección ip estática"
+2. Seguimos las instrucciones de Amazon hasta que nos otorgue una IP que no cambia cada vez que levantamos la instancia.
+3. Con esta IP elástica podemos ahora añadir un registro A desde nuestro subdominio a la dirección elástica o usar Route 53.
+
+### Añadir un dominio personalizado a nuestra aplicación con Route 53
 
 ---
 
-This FastAPI image is hosted on AWS with EB (not EC2) and is available at the following link: <https://api.sign2text.com/docs>
+1. Vamos a Route 53 en Amazon y conectamos con un registro A la dirección IP con el dominio que queremos.
+2. En nuestro gestor de DNS añadimos los nameservers de Amazon.
+3. Ya esta listo nuestro dominio con htttp. El único problema es que no es seguro (no es https).
+
+4.
+
+## Añadiendo redirección a https
+
+---
+
+1. Creamos un load balancer con un listener en el puerto 80 y un listener en el puerto 443.
+2. El puerto 80 es el que se usa para el acceso a la aplicación.
+3. El puerto 443 se leasignarña un certificado SSL.
+4. Importante añadir la política de seguridad de grupo de la instancia en el load balancer.
+5. Cuando se consgiga hacer el health check, nuestra app estará disponible en la dns del load balancer.
+6. (Opcional) Ahora podemos eliminar la ip elástica de la instancia si así lo queremos.
+7. (Opcional) Con la dns pública con HTTPS, podemos generar un registro A o CNAME para nuestro subdominio y así obtene runa url más simple.
+   1. Para esto usamos Route 53, añadimos un registro A de alias y le damos el nombre de nuestro subdominio.
+   2. Importante hacer primero los pasos del apartado anterior.
+
+## Where is it hosted then?
+
+---
+
+This FastAPI image is hosted on AWS with EC2 using docker and ssh to boot it up from the inside and is available at the following link: <https://api.sign2text.com/docs>
 
 ## Tools used for testing
 
