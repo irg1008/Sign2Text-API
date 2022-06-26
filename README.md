@@ -1,8 +1,21 @@
-# Server for delivery of onnx model to frontend
+
+# Siogn2Text - Server for delivery of onnx model to frontend
+
+<table align="center"><tr><td align="center" width="9999">
+
+<img align="center" src="./assets/logo.svg" alt="logo" width="400" />
+
+<br />
+<br />
+
+Transcripción de lenguaje de signos (a nivel de palabra) mediante Deep Learning
+</td></tr></table>
 
 Made with fastapi as an alternative to a jsvascript-made backend using onnx.js
 This is because onnx.js is not as reliable as using python based libraries.
 The client will send a video and the server will process it and send the target back.
+
+
 
 ---
 
@@ -145,6 +158,11 @@ The client will send a video and the server will process it and send the target 
 ---
 
 This FastAPI image is hosted on AWS with EC2 using docker and ssh to boot it up from the inside and is available at the following link: <https://api.sign2text.com/docs>
+
+Debido a que es una aplicación de prueba, los recursos del servidor asignados son pocos (4GB de RAM con 2CPUs), por lo que peticiones simultáneas hacen que el contenedor caiga, y tengamos que volver a arrancarlo.
+Es fácil con ssh además de ser instantáneo. El problema se solucionaría muy rápido en caso de que esta palicación pase a producción y comience de algúnb modo a genertar para cubrir el aumento de los recursos de la instancia de EC2.
+
+El precio sube mucho si asignamos lo necesario por el modelo (aprox 6GB ram)
 
 ## Tools used for testing
 
