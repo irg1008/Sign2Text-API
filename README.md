@@ -144,6 +144,10 @@ The client will send a video and the server will process it and send the target 
 7. (Opcional) Con la dns pública con HTTPS, podemos generar un registro A o CNAME para nuestro subdominio y así obtene runa url más simple.
    1. Para esto usamos Route 53, añadimos un registro A de alias y le damos el nombre de nuestro subdominio.
    2. Importante hacer primero los pasos del apartado anterior.
+8. Finalmente para redirigir el load balancer de http a https debemos añadir un listener con un redirect 301 al litener con https.
+   1. Este listener de 443 (https) será el que nos redirecciona al grupo que tiene la instancia con el puerto 80.
+   2. Para que esto funcione AWS hará un health check (un ping) al puerto de la instancia.
+9. Una vez tengamos los listener creados podemos acceder al dominio del load balancer con http y nos redirigirá a https.
 
 ## Where is it hosted then?
 
