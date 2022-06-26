@@ -1,5 +1,5 @@
 
-# Siogn2Text - Server for delivery of onnx model to frontend
+# Sign2Text - Server for delivery of onnx model to frontend
 
 <table align="center"><tr><td align="center" width="9999">
 
