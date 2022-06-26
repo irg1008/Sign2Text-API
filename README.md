@@ -15,8 +15,6 @@ Made with fastapi as an alternative to a jsvascript-made backend using onnx.js
 This is because onnx.js is not as reliable as using python based libraries.
 The client will send a video and the server will process it and send the target back.
 
-
-
 ---
 
 ## Run the backend server
@@ -49,8 +47,6 @@ The client will send a video and the server will process it and send the target 
 
 ### We can now pull the image if needed with
 
----
-
 `docker pull sign2textapi.azurecr.io/sign2text`
 
 ## Upload the container to AWS
@@ -68,7 +64,7 @@ The client will send a video and the server will process it and send the target 
 9. (Opcional) Si queremos eliminar la imagen del registro: `aws ecr batch-delete-image --repository-name sign2text --image-ids imageTag=latest`
 10. (Opcional) Si queremos eliminar el repositorio: `aws ecr delete-repository --repository-name sign2text`
 
-### Create App with EC2
+## Create App with EC2
 
 ---
 
@@ -95,8 +91,6 @@ The client will send a video and the server will process it and send the target 
     3. La aplicación ya es accesible públicamente.
 
 ### Create app Elastic Beanstalk
-
----
 
 1. Crea una aplicación de EB desde el dashboard de AWS.
 2. Elige la opción de Docker + subir código.
@@ -136,8 +130,6 @@ The client will send a video and the server will process it and send the target 
 1. Vamos a Route 53 en Amazon y conectamos con un registro A la dirección IP con el dominio que queremos.
 2. En nuestro gestor de DNS añadimos los nameservers de Amazon.
 3. Ya esta listo nuestro dominio con htttp. El único problema es que no es seguro (no es https).
-
-4.
 
 ## Añadiendo redirección a https
 
