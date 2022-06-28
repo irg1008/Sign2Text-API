@@ -16,6 +16,10 @@ Made with fastapi as an alternative to a jsvascript-made backend using onnx.js
 This is because onnx.js is not as reliable as using python based libraries.
 The client will send a video and the server will process it and send the target back.
 
+Hosted on Google Cloud (Docker container) with continous integration.
+
+Available on [api.sign2text.com](https://api.sign2text.com/docs)
+
 ---
 
 ## Run the backend server
@@ -185,9 +189,16 @@ net localgroup docker-users "%username%" /add
 5. (Opcional): Si queremos tener un dominio personalizado podemos consultar la siguiente [guia](https://cloud.google.com/run/docs/mapping-custom-domains).
    1. Pero básicamente consiste en verificar nuestro dominio o subdomnio con DNS (registro TXT y CNAME) y listos.
    2. Tras esto podemos elegir el subdomnio que queremos.
-   3. Google nos asigna el certificado automáticamene.
-   4. Ya podemos acceder a nuestra api sin que la aplicación del cliente tenga que hacer ninguna configuración.
+   3. Tardará un rato en reflejar los cambios de DNS pero ya estará disponible.
+   4. Google nos asigna el certificado automáticamene.
+   5. Ya podemos acceder a nuestra api sin que la aplicación del cliente tenga que hacer ninguna configuración.
 6. En el anexo de costes haremos un estudio de costes de nuestra aplicación.
+
+### Habilitando la integración continua con Google Cloud
+
+1. Habilitamos la API de Cloud Build.
+2. Elegimos el repositorio en que el se configurará la escucha para hacer rebuild de la imagen de docker.
+3. ¡Ya está!. Ahora Google hará rebuild de la imagen en el registro y redeploy de cloud run para actualizar los cambios.
 
 ## Where is it hosted then?
 
