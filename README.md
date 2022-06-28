@@ -38,6 +38,11 @@ The client will send a video and the server will process it and send the target 
 2. Run it with `docker run -p 8000:8000 sign2text`
 3. Open the browser and go to `http://localhost:8000`
 
+## Do you need the image alone?
+
+If you want to use or download an already built image, you can from this url: <https://hub.docker.com/r/gazquez/sign2text>
+or use: `docker pull gazquez/sign2text`
+
 ## Upload the container to azure
 
 ---
@@ -132,7 +137,7 @@ The client will send a video and the server will process it and send the target 
 2. En nuestro gestor de DNS añadimos los nameservers de Amazon.
 3. Ya esta listo nuestro dominio con htttp. El único problema es que no es seguro (no es https).
 
-## Añadiendo redirección a https
+### Añadiendo redirección a https
 
 ---
 
@@ -150,16 +155,47 @@ The client will send a video and the server will process it and send the target 
    2. Para que esto funcione AWS hará un health check (un ping) al puerto de la instancia.
 9. Una vez tengamos los listener creados podemos acceder al dominio del load balancer con http y nos redirigirá a https.
 
+## Uploading the image to Google Cloud
+
+1. Add a tag to your local image like this: `docker tag <IMAGE_NAME> <HOSTNAME>/<PROJECT_ID>/<IMAGE_NAME>`
+   1. Hostname can be one of the following:
+      1. `gcr.io`
+      2. `us.gcr.io`
+      3. `eu.gcr.io`
+      4. `asia.gcr.io`
+   2. En mi caso hago: `docker tag gazquez/sign2text gcr.io/sign2text-354412/sign2text`
+2. Hacemos un push de la imagen a Google Cloud.
+   1. `docker push gcr.io/sign2text/sign2text`
+   2. Esto generará una imagen en Google Cloud con el tag que le hemos añadido.
+   3. Info: Si nos dice que no tenemos acceso al registry: seguimos [esta guía](https://cloud.google.com/container-registry/docs/advanced-authentication#gcloud-helper) paa obtener acceso.
+      1. En mi caso uso Google Cloud CLI con el siguiente comando: `gcloud auth login`
+      2. Tras esto configuramos docker con `gcloud auth configure-docker`
+3. Una vez hecho eso ya tenemos al imagen subida al registro y podemos crear un Cloud Run para ejecutar la imagen.
+
+net localgroup docker-users "%username%" /add
+
+### Creando un Cloud Run
+
+1. Elegimos la imagen creada en el punto anterior.
+2. Elegimos el puerto del contenedor. En mi caso es **8000**.
+3. Esperamos a que se despliegue.
+4. Una vez hecho esto se nos dará una url con el contenedor desplegado.
+   1. Esta url tendrá el certificado SSL de forma directa, salvándonos muchísimo tiempo.
+   2. En mi caso la URL es: <https://sign2text-lk67e2zqjq-no.a.run.app/>
+5. (Opcional): Si queremos tener un dominio personalizado podemos consultar la siguiente [guia](https://cloud.google.com/run/docs/mapping-custom-domains).
+   1. Pero básicamente consiste en verificar nuestro dominio o subdomnio con DNS (registro TXT y CNAME) y listos.
+   2. Tras esto podemos elegir el subdomnio que queremos.
+   3. Google nos asigna el certificado automáticamene.
+   4. Ya podemos acceder a nuestra api sin que la aplicación del cliente tenga que hacer ninguna configuración.
+6. En el anexo de costes haremos un estudio de costes de nuestra aplicación.
+
 ## Where is it hosted then?
 
 ---
 
-This FastAPI image is hosted on AWS with EC2 using docker and ssh to boot it up from the inside and is available at the following link: <https://api.sign2text.com/docs>
+This FastAPI image is hosted on Google Cloud with domain mapping using docker and is available at the following link: <https://api.sign2text.com/docs>
 
-Debido a que es una aplicación de prueba, los recursos del servidor asignados son pocos (4GB de RAM con 2CPUs), por lo que peticiones simultáneas hacen que el contenedor caiga, y tengamos que volver a arrancarlo.
-Es fácil con ssh además de ser instantáneo. El problema se solucionaría muy rápido en caso de que esta palicación pase a producción y comience de algúnb modo a genertar para cubrir el aumento de los recursos de la instancia de EC2.
-
-El precio sube mucho si asignamos lo necesario por el modelo (aprox 6GB ram)
+Debido a que es una aplicación de prueba, los recursos del servidor asignados son pocos (4GB de RAM con 2CPUs), por lo que peticiones simultáneas hacen que el contenedor caiga, y tengamos que volver a arrancarlo constantemente. Esto se soluciona con un autoscaling, aunque aumenta el coste sustancialmente.
 
 ## Tools used for testing
 
