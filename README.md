@@ -199,6 +199,8 @@ net localgroup docker-users "%username%" /add
 1. Habilitamos la API de Cloud Build.
 2. Elegimos el repositorio en que el se configurará la escucha para hacer rebuild de la imagen de docker.
 3. ¡Ya está!. Ahora Google hará rebuild de la imagen en el registro y redeploy de cloud run para actualizar los cambios.
+4. (Opcional): Si queremos tener más control sobre cuantá sveces se crea la imagen (ya que consume mucho tiempo y recursos), podemos cambiar de deploy según commit a deploy manual en el dashboard de la API de Cloud Build.
+   1. En mi caso tengo esta opción marcada. De esta manera solo se hace redeploy del servidor (código, modelos y dependencias) de forma manual.
 
 ## Where is it hosted then?
 
