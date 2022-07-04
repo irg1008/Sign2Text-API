@@ -1,5 +1,5 @@
 
-# Sign2Text - Server for delivery of onnx model to frontend
+# Sign2Text - API
 
 <table align="center"><tr><td align="center" width="9999">
 
@@ -12,54 +12,54 @@
 Transcripción de lenguaje de signos (a nivel de palabra) mediante Deep Learning
 </td></tr></table>
 
-Made with fastapi as an alternative to a jsvascript-made backend using onnx.js
-This is because onnx.js is not as reliable as using python based libraries.
-The client will send a video and the server will process it and send the target back.
+Hecho con fastapi como alternativa a un backend hecho con JavaScript usando onnx.js
+Esto se debe a que onnx.js no es tan fiable y su ecosistema no estan rico como el de Python.
 
-Hosted on Google Cloud (Docker container) with continous integration.
+El cliente enviará un video y el servidor lo procesará y devolverá el signo clasificado de vuelta.
 
-Available on [api.sign2text.com](https://api.sign2text.com/docs)
-
----
-
-## Run the backend server
+Alojado en Google Cloud (contenedor Docker) con integración continua y disponible en [api.sign2text.com](https://api.sign2text.com/docs)
 
 ---
 
-> For development
+## Ejecuta el servidor en local
+
+---
+
+> Para desarrollo
 
 `uvicorn main:app --reload --port 8000` or `python dev.py`
 
-> For production
+> Para producción
 
 `uvicorn main:app --port 8000` or `python run.py`
 
-## Run locally on docker
+## Ejecuta en local con Docker
 
 ---
 
-1. Build the image with `docker build -t sign2text .`
-2. Run it with `docker run -p 8000:8000 sign2text`
-3. Open the browser and go to `http://localhost:8000`
+1. Construye la imagen con `docker build -t sign2text .`
+2. Ejecútalo: `docker run -p 8000:8000 sign2text`
+3. Accede desde el navegador en `http://localhost:8000`
 
-## Do you need the image alone?
+## ¿Solo necesitas la imagen del contendor?
 
-If you want to use or download an already built image, you can from this url: <https://hub.docker.com/r/gazquez/sign2text>
-or use: `docker pull gazquez/sign2text`
+Si quieres usar o descargar una imagen ya construida, puedes desde esta url: <https://hub.docker.com/r/gazquez/sign2text>
 
-## Upload the container to azure
+Tambiñen puedes descargarla usando el CLI con `docker pull gazquez/sign2text`
+
+## Instrucciones para subir el contenedor a Azure
 
 ---
 
-1. Log in: `docker login sign2textapi.azurecr.io` Ver claves en Sign2TextAPI > Azure Container Registry > Claves de Acceso
-2. Add the label to the registry: `docker tag sign2text:latest sign2textapi.azurecr.io/latest`
-3. Push the image to the registry: `docker push sign2textapi.azurecr.io/latest`
+1. Inicie sesión: `docker login sign2textapi.azurecr.io` (Ver claves en Sign2TextAPI > Azure Container Registry > Claves de Acceso)
+2. Añadir la etiqueta al registro: `docker tag sign2text:latest sign2textapi.azurecr.io/latest`
+3. Empuje la imagen al registro: `docker push sign2textapi.azurecr.io/latest`.
 
-### We can now pull the image if needed with
+### Ahora podemos tirar de la imagen si es necesario con
 
 `docker pull sign2textapi.azurecr.io/sign2text`
 
-## Upload the container to AWS
+## Subir el contenedor a AWS
 
 ---
 
@@ -74,17 +74,17 @@ or use: `docker pull gazquez/sign2text`
 9. (Opcional) Si queremos eliminar la imagen del registro: `aws ecr batch-delete-image --repository-name sign2text --image-ids imageTag=latest`
 10. (Opcional) Si queremos eliminar el repositorio: `aws ecr delete-repository --repository-name sign2text`
 
-## Create App with EC2
+## Crear una app con EC2
 
 ---
 
-1. Create a EC2 service in the platform.
-2. Connect to it with ssh using the pair keys given with: `ssh -i "credentials.pem" ec2-user@<INSTANCE>.<REGION>.compute.amazonaws.com`
-3. When connected, run the following commands:
-   1. Update the pacackage list: `sudo yum update -y`
-   2. Install docker: `sudo amazon-linux-extras install docker`
-   3. Start the docker with `sudo service docker start`
-   4. Add the ec2-user to the docker group so you can execute Docker #commands without using sudo. `sudo usermod -a -G docker ec2-user`
+1. Crear un servicio EC2 en la plataforma.
+2. Conéctate a él con ssh usando el par de claves dadas con: `ssh -i "credenciales.pem" ec2-usuario@<INSTANCIA>.<REGIÓN>.compute.amazonaws.com`.
+3. Cuando esté conectado, ejecute los siguientes comandos:
+   1. Actualice la lista de paquetes: `sudo yum update -y`
+   2. Instalar Docker: `sudo amazon-linux-extras install docker`.
+   3. Inicie el docker con `sudo service docker start`.
+   4. Añade el usuario ec2 al grupo docker para poder ejecutar los #comandos Docker sin usar sudo. `sudo usermod -a -G docker ec2-user`
 4. Reinicaimos la instancia de EC2 desde la plataforma y nos conectamos de nuevo.
 5. Al igual que en el punto anterior, subimos la imagen al ECR (Elastic Container Registry) (tag + push)
 6. Una vez tenemos el registro y el EC2, nos conectamos a este último de nuevo para ejecutar la imagen.
@@ -100,7 +100,7 @@ or use: `docker pull gazquez/sign2text`
     2. Agregamos una regla con tipo "Todo el tráfico" y 0.0.0.0/0 o arreglamos regla de Https y Http Para 0.0.0.0 y ::0.
     3. La aplicación ya es accesible públicamente.
 
-### Create app Elastic Beanstalk
+### Crear una app con Elastic Beanstalk
 
 1. Crea una aplicación de EB desde el dashboard de AWS.
 2. Elige la opción de Docker + subir código.
@@ -202,15 +202,15 @@ net localgroup docker-users "%username%" /add
 4. (Opcional): Si queremos tener más control sobre cuantá sveces se crea la imagen (ya que consume mucho tiempo y recursos), podemos cambiar de deploy según commit a deploy manual en el dashboard de la API de Cloud Build.
    1. En mi caso tengo esta opción marcada. De esta manera solo se hace redeploy del servidor (código, modelos y dependencias) de forma manual.
 
-## Where is it hosted then?
+## ¿Dónde está alojado entonces?
 
 ---
 
-This FastAPI image is hosted on Google Cloud with domain mapping using docker and is available at the following link: <https://api.sign2text.com/docs>
+Esta imagen de FastAPI está alojada en Google Cloud con mapeo de dominios mediante docker y está disponible en el siguiente enlace: <https://api.sign2text.com/docs>
 
 Debido a que es una aplicación de prueba, los recursos del servidor asignados son pocos (4GB de RAM con 2CPUs), por lo que peticiones simultáneas hacen que el contenedor caiga, y tengamos que volver a arrancarlo constantemente. Esto se soluciona con un autoscaling, aunque aumenta el coste sustancialmente.
 
-## Tools used for testing
+## Herramienats usadas para API testing
 
 ---
 
