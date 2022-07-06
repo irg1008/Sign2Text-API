@@ -31,7 +31,7 @@ Alojado en Google Cloud (contenedor Docker) con integración continua y disponib
 
 > Para producción
 
-`uvicorn main:app --port 8000` or `python run.py`
+`uvicorn main:app --port 8000`
 
 ## Ejecuta en local con Docker
 
