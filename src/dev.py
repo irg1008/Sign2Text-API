@@ -1,4 +1,6 @@
 import uvicorn
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", port=8000, reload=True)
+    port=8000
+    print(f"Executing on http://localhost:{port}")
+    uvicorn.run("main:app", port=port, reload=True)
